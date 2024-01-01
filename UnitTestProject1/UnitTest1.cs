@@ -2,8 +2,11 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Threading;
+
+
 
 
 
@@ -18,6 +21,7 @@ namespace UnitTestProject1
     public class UnitTest1
     {   // Adresele URL pt obiectul driver + brandul/marca de anvelope pe care il caut
         public readonly string SIGEMO_TARGET = "https://www.sigemo.ro/";
+        public  string[] ELEM_SEARCH = {" ", "bla bla"};
         public readonly string BRAND_NAME = "Hankook";
         public readonly string USER_SIGEMO = Environment.GetEnvironmentVariable("user_sigemo");
         public IWebDriver driver = new ChromeDriver();
@@ -43,8 +47,8 @@ namespace UnitTestProject1
                     continue;
                 }
             }
-
-            // text_box searh, introducere var BRAND in boxa "search"
+            test_search();
+            // text_box search, introducere var BRAND in boxa "search"
             IWebElement box_search = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
             box_search.Clear();
             box_search.SendKeys(BRAND_NAME); // adaugare in text box variabila BRAND
@@ -91,8 +95,7 @@ namespace UnitTestProject1
                     continue; 
                 }
             }
-            Console.WriteLine(box_search);
-
+  
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[5]/div/div/div/label/select")).Click(); // click box "latime anvelope"
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[5]/div/div/div/label/select/option[10]")).Click(); //selectare dimeniune latime 225
             Thread.Sleep(5000);
@@ -121,6 +124,44 @@ namespace UnitTestProject1
                     continue;
                 }
 
+            }
+            
+        }
+
+        [TestMethod]
+        public void test_search()
+        {   /// <summary>
+            /// Functie cu scopul de a introduce in caseta "search" valorile din ELEM_SEARCH, cu scopul de a observa ce mesaj returneaza...
+            /// </summary>
+            
+            int len_elem_search = ELEM_SEARCH.Length - 1;
+            for (int i = 0; i <= len_elem_search;)
+            {
+                IWebElement search_box = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
+                search_box.Clear();
+                search_box.SendKeys(ELEM_SEARCH[i]);
+                while (true) // Rezolvare prin "catch" la eroare de mai sus (refresh la pagina pana cand driverul identifica elementul)
+                             // dupa care click pe icoana "search"
+                {
+                    try
+                    {
+                        driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
+                        .Click(); // click icoana "lupa" (search)
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        //driver.Navigate().Refresh(); // Refresh la sectiune si reintroducere ELEM_SEARH[i]
+                        //close_popup();
+                        search_box = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
+                        search_box.Clear();
+                        search_box.SendKeys(ELEM_SEARCH[i]);
+                        //driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
+                        //.Click();
+                        continue;
+                       }
+                }
+                i++;
             }
             
         }
