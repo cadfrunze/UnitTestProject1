@@ -21,7 +21,7 @@ namespace UnitTestProject1
     public class UnitTest1
     {   // Adresele URL pt obiectul driver + brandul/marca de anvelope pe care il caut
         public readonly string SIGEMO_TARGET = "https://www.sigemo.ro/";
-        public  string[] ELEM_SEARCH = {" ", "bla bla"};
+        public  string[] ELEM_SEARCH = {"", "bla bla"};
         public readonly string BRAND_NAME = "Hankook";
         public readonly string USER_SIGEMO = Environment.GetEnvironmentVariable("user_sigemo");
         public IWebDriver driver = new ChromeDriver();
@@ -48,8 +48,15 @@ namespace UnitTestProject1
                 }
             }
             test_search();
+            //Thread.Sleep(5000);
+            //driver.Navigate().Refresh();
+            driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[2]/ul/li[1]/a")).Click();
+            close_popup();
+            Thread.Sleep(2000);
             // text_box search, introducere var BRAND in boxa "search"
             IWebElement box_search = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
+            box_search.Click(); 
+            box_search.Clear();
             box_search.Clear();
             box_search.SendKeys(BRAND_NAME); // adaugare in text box variabila BRAND
             status_net();
@@ -88,10 +95,11 @@ namespace UnitTestProject1
                     driver.Navigate().Refresh(); // Refresh la sectiune si reintroducere BRAND_NAME
                     close_popup();
                     box_search = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
+                    box_search.Click();
                     box_search.Clear();
                     box_search.SendKeys(BRAND_NAME);
-                    driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
-                    .Click();
+                    //driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
+                    //.Click();
                     continue; 
                 }
             }
@@ -138,6 +146,7 @@ namespace UnitTestProject1
             for (int i = 0; i <= len_elem_search;)
             {
                 IWebElement search_box = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
+                search_box.Click();
                 search_box.Clear();
                 search_box.SendKeys(ELEM_SEARCH[i]);
                 while (true) // Rezolvare prin "catch" la eroare de mai sus (refresh la pagina pana cand driverul identifica elementul)
@@ -151,9 +160,10 @@ namespace UnitTestProject1
                     }
                     catch (Exception)
                     {
-                        //driver.Navigate().Refresh(); // Refresh la sectiune si reintroducere ELEM_SEARH[i]
+                        driver.Navigate().Refresh(); // Refresh la sectiune si reintroducere ELEM_SEARH[i]
                         //close_popup();
                         search_box = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
+                        search_box.Click();
                         search_box.Clear();
                         search_box.SendKeys(ELEM_SEARCH[i]);
                         //driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
@@ -163,6 +173,7 @@ namespace UnitTestProject1
                 }
                 i++;
             }
+            
             
         }
 
