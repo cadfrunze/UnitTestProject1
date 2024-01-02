@@ -57,9 +57,9 @@ namespace UnitTestProject1
             IWebElement box_search = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
             box_search.Click(); 
             box_search.Clear();
-            box_search.Clear();
             box_search.SendKeys(BRAND_NAME); // adaugare in text box variabila BRAND
             status_net();
+            Thread.Sleep(2000);
 
             /* Acest element din search, dupa introducerea  variabilei BRAND_NAME, functioneaza din "Run", dar din debug,
                imi RETURNEAZA:  
@@ -172,6 +172,7 @@ namespace UnitTestProject1
                        }
                 }
                 i++;
+                Thread.Sleep(2000);
             }
             
             
