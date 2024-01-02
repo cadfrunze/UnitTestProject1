@@ -88,7 +88,9 @@ namespace UnitTestProject1
                 {
                     driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
                     .Click(); // click icoana "lupa" (search)
-                    
+                    driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
+                    .Click();
+
                     break;
                 }
                 catch (Exception) {
@@ -156,6 +158,8 @@ namespace UnitTestProject1
                     {
                         driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
                         .Click(); // click icoana "lupa" (search)
+                        driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
+                        .Click();
                         break;
                     }
                     catch (Exception)
