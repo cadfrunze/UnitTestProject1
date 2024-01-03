@@ -48,11 +48,12 @@ namespace UnitTestProject1
                     continue;
                 }
             }
-            close_chat(); // Inchidere acel chat box
+            
             test_search();
             //Thread.Sleep(5000);
             //driver.Navigate().Refresh();
             driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[2]/ul/li[1]/a")).Click();
+            Thread.Sleep(5);
             close_popup();
             Thread.Sleep(2000);
             // text_box search, introducere var BRAND in boxa "search"
@@ -90,7 +91,9 @@ namespace UnitTestProject1
                 {
                     driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
                     .Click(); // click icoana "lupa" (search)
-                    
+                    /*driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
+                    .Click(); Doar pt dubug al doileaa click, cu un click nu declanseaza butonul search */
+
                     break;
                 }
                 catch (Exception) {
@@ -110,7 +113,10 @@ namespace UnitTestProject1
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[5]/div/div/div/label/select/option[10]")).Click(); //selectare dimeniune latime 225
             Thread.Sleep(5000);
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[3]/div/div/div/label/select/option[3]")).Click(); //selectare inaltime 45
-            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[4]/div/div/div/label/select")).Click();
+            Thread.Sleep(5000);
+            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[4]/div/div/div/label/select/option[2]")).Click();
+            
+
             //var menuOpen = driver.FindElement(By.PartialLinkText("Logare"));
             //menuOpen.Click();
             //driver.Quit();
@@ -179,17 +185,18 @@ namespace UnitTestProject1
             
         }
 
-        public void close_chat()
+        /*public void close_chat()
         { // Inchidere dialog chat
             while (true)
             {
                 try { 
-                    driver.FindElement(By.XPath("/html/body/div/div/div/div/div/div/div/div/div[1]/div/div[1]/div[3]/div[2]/div/div/svg/path[1]")).Click(); 
+                    driver.FindElement(By.ClassName("x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x1q0g3np.x87ps6o.x1lku1pv.x1a2a7pz")).Click();
+                    break;
                 }
                 catch (Exception) { continue; }    
                 
             }
-        }
+        }*/
 
         public void status_net()
             // Verificare conexiune date
