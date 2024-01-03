@@ -34,6 +34,7 @@ namespace UnitTestProject1
             driver.Navigate().GoToUrl(SIGEMO_TARGET);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20); // Waiting.... sa ma asigur ca incarca acel popup
             close_popup(); // Inchidere popup
+            
             while (true) // inchidere mesaj cookie
             {
                 try
@@ -47,6 +48,7 @@ namespace UnitTestProject1
                     continue;
                 }
             }
+            close_chat(); // Inchidere acel chat box
             test_search();
             //Thread.Sleep(5000);
             //driver.Navigate().Refresh();
@@ -108,7 +110,7 @@ namespace UnitTestProject1
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[5]/div/div/div/label/select/option[10]")).Click(); //selectare dimeniune latime 225
             Thread.Sleep(5000);
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[3]/div/div/div/label/select/option[3]")).Click(); //selectare inaltime 45
-
+            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[4]/div/div/div/label/select")).Click();
             //var menuOpen = driver.FindElement(By.PartialLinkText("Logare"));
             //menuOpen.Click();
             //driver.Quit();
@@ -177,6 +179,18 @@ namespace UnitTestProject1
             
         }
 
+        public void close_chat()
+        { // Inchidere dialog chat
+            while (true)
+            {
+                try { 
+                    driver.FindElement(By.XPath("/html/body/div/div/div/div/div/div/div/div/div[1]/div/div[1]/div[3]/div[2]/div/div/svg/path[1]")).Click(); 
+                }
+                catch (Exception) { continue; }    
+                
+            }
+        }
+
         public void status_net()
             // Verificare conexiune date
         {
@@ -187,10 +201,14 @@ namespace UnitTestProject1
                     
                     var reply = pingul.Send("www.google.ro");
                     if (reply.Status == IPStatus.Success)
+                        
                         break;
                 }
-                catch (Exception) { continue; }
-        }
+                catch (Exception) {
+                    driver.Navigate().Refresh();
+                    continue; }
+            
+        }   
     }
 }
 
