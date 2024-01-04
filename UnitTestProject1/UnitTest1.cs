@@ -118,11 +118,11 @@ namespace UnitTestProject1
             Thread.Sleep(5000);
             
             // Cautare, returnare colectie de elemente de tipul IWebElement (ATENTIE!!!) 
-            IReadOnlyCollection<IWebElement> elemente = driver.FindElements(By.PartialLinkText("iarna"));
+            IReadOnlyCollection<IWebElement> elemente_iarna = driver.FindElements(By.PartialLinkText("iarna"));
 
 
             // Afisare in consola....
-            foreach (IWebElement element in elemente){ // hmm...in python = for element in elemente print(element.text)
+            foreach (IWebElement element in elemente_iarna){ // hmm...in python = for element in elemente print(element.text)
                 Console.WriteLine(element.Text);
             }
             Thread.Sleep(5000);
