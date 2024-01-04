@@ -115,7 +115,16 @@ namespace UnitTestProject1
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[3]/div/div/div/label/select/option[3]")).Click(); //selectare inaltime 45
             Thread.Sleep(5000);
             driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div/div/div[1]/div/div/div/div[4]/div/div/div/label/select/option[2]")).Click();
+            Thread.Sleep(5000);
             
+            // Cautare, returnare colectie de elemente de tipul IWebElement (ATENTIE!!!) 
+            IReadOnlyCollection<IWebElement> elemente = driver.FindElements(By.PartialLinkText("iarna"));
+
+
+            // Afisare in consola....
+            foreach (IWebElement element in elemente){ // hmm...in python = for element in elemente print(element.text)
+                Console.WriteLine(element.Text);
+            }
 
             //var menuOpen = driver.FindElement(By.PartialLinkText("Logare"));
             //menuOpen.Click();
