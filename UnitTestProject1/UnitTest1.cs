@@ -125,10 +125,11 @@ namespace UnitTestProject1
             foreach (IWebElement element in elemente){ // hmm...in python = for element in elemente print(element.text)
                 Console.WriteLine(element.Text);
             }
-
+            Thread.Sleep(5000);
             //var menuOpen = driver.FindElement(By.PartialLinkText("Logare"));
             //menuOpen.Click();
-            //driver.Quit();
+            driver.Quit();
+            //Console.WriteLine(USER_SIGEMO);
 
         }
         [TestMethod]
