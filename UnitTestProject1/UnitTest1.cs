@@ -30,8 +30,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod_Sigemo()
         {
-            Console.WriteLine(USER_SIGEMO);
-            Console.WriteLine(PASS_SIGEMO);
+           
             status_net(); // Verificare conexiune date
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(SIGEMO_TARGET);
@@ -125,8 +124,10 @@ namespace UnitTestProject1
             }
             Thread.Sleep(2000);
             //LOGIN  
-            //login_sigemo1(); // login cu pop_up
+            login_sigemo1(); // login cu pop_up
             login_sigemo2(); // login din cadrul sectiunii
+            Thread.Sleep(5000);
+            driver.Quit();
             
 
 
