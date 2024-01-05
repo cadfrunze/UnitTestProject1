@@ -23,17 +23,20 @@ namespace UnitTestProject1
         public readonly string SIGEMO_TARGET = "https://www.sigemo.ro/";
         public  string[] ELEM_SEARCH = {"", "bla bla"};
         public readonly string BRAND_NAME = "Hankook";
-        public readonly string USER_SIGEMO = Environment.GetEnvironmentVariable("user_sigemo");
+        public string USER_SIGEMO = Environment.GetEnvironmentVariable("user_sigemo");
+        public string PASS_SIGEMO = Environment.GetEnvironmentVariable("pass_sigemo");
         public IWebDriver driver = new ChromeDriver();
 
         [TestMethod]
         public void TestMethod_Sigemo()
         {
+            Console.WriteLine(USER_SIGEMO);
+            Console.WriteLine(PASS_SIGEMO);
             status_net(); // Verificare conexiune date
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(SIGEMO_TARGET);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20); // Waiting.... sa ma asigur ca incarca acel popup
-            close_popup(); // Inchidere popup
+            //close_popup(); // Inchidere popup
             
             while (true) // inchidere mesaj cookie
             {
@@ -48,13 +51,10 @@ namespace UnitTestProject1
                     continue;
                 }
             }
-            
+            Thread.Sleep(3000);
             test_search();
-            //Thread.Sleep(5000);
-            //driver.Navigate().Refresh();
             driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[2]/ul/li[1]/a")).Click();
-            Thread.Sleep(5);
-            close_popup();
+            //close_popup();
             Thread.Sleep(2000);
             // text_box search, introducere var BRAND in boxa "search"
             IWebElement box_search = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
@@ -96,7 +96,7 @@ namespace UnitTestProject1
                 }
                 catch (Exception) {
                     driver.Navigate().Refresh(); // Refresh la sectiune si reintroducere BRAND_NAME
-                    close_popup();
+                    //close_popup();
                     box_search = driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/span/input[2]"));
                     box_search.Click();
                     box_search.Clear();
@@ -123,11 +123,14 @@ namespace UnitTestProject1
             foreach (IWebElement element in elemente_iarna){ // hmm...in python = for element in elemente print(element.text)
                 Console.WriteLine(element.Text);
             }
-            Thread.Sleep(5000);
-            //var menuOpen = driver.FindElement(By.PartialLinkText("Logare"));
-            //menuOpen.Click();
-            driver.Quit();
-            //Console.WriteLine(USER_SIGEMO);
+            Thread.Sleep(2000);
+            //LOGIN  
+            //login_sigemo1(); // login cu pop_up
+            login_sigemo2(); // login din cadrul sectiunii
+            
+
+
+
 
         }
         [TestMethod]
@@ -172,8 +175,9 @@ namespace UnitTestProject1
                     {
                         driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
                         .Click(); // click icoana "lupa" (search)
-                        driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
+                        /* driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[3]/div/div/div/button"))
                         .Click();
+                        */
                         break;
                     }
                     catch (Exception)
@@ -196,18 +200,71 @@ namespace UnitTestProject1
             
         }
 
-        /*public void close_chat()
-        { // Inchidere dialog chat
+        [TestMethod]
+        public void login_sigemo1()
+        {
+            int count = 1;
+            driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/a")).Click();
+            driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/div/ul/li[1]")).Click();
             while (true)
             {
-                try { 
-                    driver.FindElement(By.ClassName("x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x1q0g3np.x87ps6o.x1lku1pv.x1a2a7pz")).Click();
+                try
+                {
+                    driver.FindElement(By.Id("input-email")).Click();
+                    driver.FindElement(By.Id("input-email")).Clear();
+                    driver.FindElement(By.Id("input-email")).SendKeys(USER_SIGEMO);
+
                     break;
                 }
-                catch (Exception) { continue; }    
-                
+                    
+                catch (Exception)
+                {
+                    driver.Navigate().Refresh();
+                    driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/a")).Click();
+                    driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/div/ul/li[1]")).Click();
+                    count++;
+                    if (count == 3) { 
+                        driver.FindElement(By.XPath("/html/body/div[11]/div[1]/button")).Click();
+                        break; }
+                    continue;
+                }
             }
-        }*/
+            if (count < 3)
+            {
+                while (true)
+                {
+                    try
+                    {
+                        driver.FindElement(By.Id("input-password")).Click();
+                        driver.FindElement(By.Id("input-password")).Clear();
+                        driver.FindElement(By.Id("input-password")).SendKeys(PASS_SIGEMO);
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        driver.Navigate().Refresh();
+                        driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/a")).Click();
+                        driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/div/ul/li[1]")).Click();
+                        continue;
+
+                    }
+
+                }
+                driver.FindElement(By.XPath("/html/body/div[4]/form/div[3]/div/button")).Click();
+            }
+            
+        }
+        [TestMethod]
+        public void login_sigemo2()
+        {
+            driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/a")).Click();
+            driver.FindElement(By.XPath("/html/body/div[7]/header/div[1]/div[3]/div[4]/ul/li[1]/a")).Click();
+            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div[2]/div/form/div[1]/input")).Clear();
+            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div[2]/div/form/div[1]/input")).SendKeys(USER_SIGEMO);
+            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div[2]/div/form/div[2]/input")).Clear();
+            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div[2]/div/form/div[2]/input")).SendKeys(PASS_SIGEMO);
+            driver.FindElement(By.XPath("/html/body/div[7]/div[2]/div/div/div/div[2]/div/form/div[3]/div/button")).Click();
+        }
 
         public void status_net()
             // Verificare conexiune date
